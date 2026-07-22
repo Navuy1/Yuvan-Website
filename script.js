@@ -17,7 +17,15 @@ const observer = new IntersectionObserver(
   { threshold: 0.1 }
 );
 
-animatedEls.forEach((el) => observer.observe(el));
+animatedEls.forEach((el) => {
+  // If already in viewport on load, make visible immediately
+  const rect = el.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    el.classList.add('visible');
+  } else {
+    observer.observe(el);
+  }
+});
 
 // Active nav link highlight on scroll
 const sections = document.querySelectorAll('section[id]');
